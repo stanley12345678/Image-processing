@@ -1,0 +1,15 @@
+﻿  source.cpp
+c:\opencv\build\include\opencv2\core.hpp(1744,1): warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
+  (編譯來源檔案 'source.cpp')
+  
+c:\opencv\build\include\opencv2\core.hpp(1744,1): warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
+  (編譯來源檔案 'source.cpp')
+  
+c:\opencv\build\include\opencv2\core.hpp(1744,1): warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
+  (編譯來源檔案 'source.cpp')
+  
+c:\opencv\build\include\opencv2\calib3d.hpp(1,1): warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
+  (編譯來源檔案 'source.cpp')
+  
+C:\Users\user\Desktop\1121221\1121221\Project1\Project1\source.cpp(12,17): warning C4244: '正在初始化': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+  Project1.vcxproj -> C:\Users\user\Desktop\1121221\1121221\Project1\x64\Debug\Project1.exe
