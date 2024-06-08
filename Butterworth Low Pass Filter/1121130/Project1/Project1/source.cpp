@@ -59,15 +59,17 @@ void showFreq(Mat& F, const char* winName) {
 	//log enhancement
 	Fmag += 1;
 	log(Fmag, Fmag);
+	Fmag /= log(2.0);
 	//show result
 	normalize(Fmag, Fmag, 0, 1, NORM_MINMAX);
 	imshow("winName", Fmag);
 }
+
 void showFilter(Mat& H, const char* winName) {
 	//show mask
 	Mat maskH[2];
 	split(H, maskH);
-	imshow( winName, maskH[0]);
+	imshow(winName, maskH[0]);
 }
 
 //Ideal low pass filter
@@ -92,28 +94,55 @@ void GaussianLowPassFilter(Mat& F, int d0)
 		}
 	}
 	F = F.mul(H);
-	showFilter(H, "GaussianLowPassFilter");
+	showFilter(H, "Gaussian Low Pass Filter");
 }
 
 
-void ButterworthLowPassFilter(Mat& F, int d0,int n)
+void ButterworthLowPassFilter(Mat& F, int d0, int n)
 {
-	Mat_<Vec2f> H = Mat(F.rows, F.cols, CV_32FC2);
+	Mat H(F.rows, F.cols, CV_32FC2);
 	int cx = F.rows / 2;
 	int cy = F.cols / 2;
 	for (int u = 0; u < F.rows; u++) {
 		for (int v = 0; v < F.cols; v++) {
 			float d = sqrt((float)((u - cx) * (u - cx) + (v - cy) * (v - cy)));
-			H.at<Vec2f>(u, v)[0]=1.f/(1.f+pow(d/d0,2*n));
-			H.at<Vec2f>(u, v)[1]= H.at < Vec2f>(u,v)[0];
+			H.at<Vec2f>(u, v)[0] = 1.f / (1.f + pow(d / d0, 2 * n));
+			H.at<Vec2f>(u, v)[1] = H.at < Vec2f>(u, v)[0];
 		}
 	}
 	F = F.mul(H);
 	showFilter(H, "Butterworth Low Pass Filter");
 }
 
-void on_trackbar_d0(int d0 , void* vPtr)
-{	
-	My
-	imshow("Linear Blend", dst);
+void on_trackbar_d0(int d0, void* vPtr)
+{
+	MyData* pData = (MyData*)vPtr;
+	Mat F = myDFT(pData->f);
+
+	showFreq(F, "F before being filtered ");
+	ButterworthLowPassFilter(F, pData->d0, pData->n);
+	showFreq(F, "F after being filtered ");
+
+	Mat g = myIDFT(F);
+	imshow("Result", g);
+}
+
+int main(void)
+{
+	Mat f = imread("sample.bmp", IMREAD_REDUCED_GRAYSCALE_2);
+	if (!f.empty()) {
+		MyData mydata;
+		f.convertTo(f, CV_32F, 1.f / 255);
+		imshow("Source", f);
+
+		mydata.f = f.clone();
+		mydata.d0 = 100;
+		mydata.n = 2;
+
+		createTrackbar("D0", "Source", &mydata.d0, 255, on_trackbar_d0, &mydata);
+		createTrackbar("n", "Source", &mydata.n, 20, on_trackbar_d0, &mydata);
+
+		waitKey(0);
+	}
+	return(0);
 }
